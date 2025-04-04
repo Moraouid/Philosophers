@@ -6,7 +6,7 @@
 /*   By: sel-abbo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 18:34:45 by sel-abbo          #+#    #+#             */
-/*   Updated: 2025/04/02 08:11:45 by sel-abbo         ###   ########.fr       */
+/*   Updated: 2025/04/04 14:39:30 by sel-abbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,20 @@ typedef struct s_philo
 	pthread_mutex_t *left_fork;
 	pthread_mutex_t *right_fork;
 	pthread_mutex_t meal_mutex;
+
+
 } t_philo;
 
 /* functions */
 int ft_atoi(const char *str);
 int is_valid(int ac, char **av);
+void print_status(t_philo *philo, char *msg);
+void take_forks(t_philo *philo);
+void put_forks(t_philo *philo);
+void eat(t_philo *philo);
+void sleep_and_think(t_philo *philo);
+long get_time(void);
+int check_die(t_philo *philo);
 
 
 #endif

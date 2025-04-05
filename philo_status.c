@@ -6,7 +6,7 @@
 /*   By: sel-abbo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 19:17:07 by sel-abbo          #+#    #+#             */
-/*   Updated: 2025/04/04 21:26:22 by sel-abbo         ###   ########.fr       */
+/*   Updated: 2025/04/05 00:12:45 by sel-abbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ void sleep_and_think(t_philo *philo)
 	usleep(philo->data->time_to_sleep * 1000);
 	if(check_die(philo))
 		return ;
-	usleep(1000);
 	if(check_die(philo))
 		return ;
 	print_status(philo, "is thinking");
+	usleep(philo->data->time_to_think * 1000);
 }

@@ -6,7 +6,7 @@
 /*   By: sel-abbo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 18:34:45 by sel-abbo          #+#    #+#             */
-/*   Updated: 2025/04/04 14:39:30 by sel-abbo         ###   ########.fr       */
+/*   Updated: 2025/04/04 23:46:02 by sel-abbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_data
 	int time_to_die;
 	int time_to_eat;
 	int time_to_sleep;
+	int time_to_think;
 	int max_meals;
 	int stop;
 	pthread_mutex_t *forks;

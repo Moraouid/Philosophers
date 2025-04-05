@@ -6,7 +6,7 @@
 /*   By: sel-abbo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 21:34:54 by sel-abbo          #+#    #+#             */
-/*   Updated: 2025/04/04 21:20:41 by sel-abbo         ###   ########.fr       */
+/*   Updated: 2025/04/05 00:33:45 by sel-abbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,14 @@ void init_data(t_data *data, char **av)
 	else
 		data->max_meals = -1;
 	data->stop = 0;
+	data->time_to_think = 0;
+	if(data->num_philosophers % 2 == 1)
+	{
+		if (data->time_to_eat > data->time_to_sleep) 
+			data->time_to_think = data->time_to_eat;
+		else if (data->time_to_sleep == data->time_to_eat)
+			data->time_to_think = data->time_to_eat / 2;
+	}
 }
 
 int check_die(t_philo *philo)
@@ -36,6 +44,7 @@ int check_die(t_philo *philo)
 	pthread_mutex_unlock(&philo->data->meal_mutex);
 	return 0;
 }
+
 int	all_philos_full(t_data *data)
 {
 	int	i;
@@ -65,7 +74,6 @@ long get_time(void)
 	current_time = (time.tv_sec * 1000) + (time.tv_usec / 1000);
 	return (current_time);
 }
-
 
 void mutex_initialization(t_data *data, t_philo *philos)
 {
@@ -126,8 +134,9 @@ void *philo_routine(void *arg)
 
 void *monitor_routine(void *arg)
 {
-	t_data *data = (t_data *)arg;
 	int i;
+	t_data *data;
+	data = (t_data *)arg;
 
 	while (1)
 	{
@@ -150,7 +159,7 @@ void *monitor_routine(void *arg)
             data->stop = 1;
             return NULL;
         }
-		usleep(500);
+		// usleep(500);
 	}
 	return NULL;
 }

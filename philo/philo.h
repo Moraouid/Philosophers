@@ -6,7 +6,7 @@
 /*   By: sel-abbo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 18:34:45 by sel-abbo          #+#    #+#             */
-/*   Updated: 2025/04/04 23:46:02 by sel-abbo         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:13:04 by sel-abbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_philo
 int ft_atoi(const char *str);
 int is_valid(int ac, char **av);
 void print_status(t_philo *philo, char *msg);
-void take_forks(t_philo *philo);
+int take_forks(t_philo *philo);
 void put_forks(t_philo *philo);
 void eat(t_philo *philo);
 void sleep_and_think(t_philo *philo);

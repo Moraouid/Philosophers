@@ -6,7 +6,7 @@
 /*   By: sel-abbo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 21:34:54 by sel-abbo          #+#    #+#             */
-/*   Updated: 2025/04/05 00:33:45 by sel-abbo         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:16:09 by sel-abbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,7 @@ void mutex_initialization(t_data *data, t_philo *philos)
 	}
 	i = 0;
 	while (i < data->num_philosophers)
-	{
-		pthread_mutex_init(&data->forks[i], NULL);
-		i++;
-	}
+		pthread_mutex_init(&data->forks[i++], NULL);
 	i = 0;
 	while (i < data->num_philosophers)
 	{
@@ -98,6 +95,8 @@ void mutex_initialization(t_data *data, t_philo *philos)
 		philos[i].left_fork = &data->forks[i];
 		philos[i].right_fork = &data->forks[(i + 1) % data->num_philosophers];
 		philos[i].data = data;
+		philos[i].meals_eaten = 0;
+		philos[i].last_meal_time = 0;
 		i++;
 	}
     pthread_mutex_init(&data->print_mutex, NULL);
@@ -109,7 +108,9 @@ void *philo_routine(void *arg)
 	t_philo *philo;
 	
 	philo = (t_philo *)arg;
+	pthread_mutex_lock(&philo->data->meal_mutex);
 	philo->last_meal_time = get_time();
+	pthread_mutex_unlock(&philo->data->meal_mutex);
 	if (philo->id % 2 == 1)
 		usleep(1000);
 	if(philo->data->num_philosophers == 1)
@@ -122,9 +123,11 @@ void *philo_routine(void *arg)
 	{
 		if(check_die(philo))
 			break;
-		take_forks(philo);
-		eat(philo);
-		put_forks(philo);
+		if(take_forks(philo) == 1)
+		{
+			eat(philo);
+			put_forks(philo);
+		}
 		if(check_die(philo))
 			break;
 		sleep_and_think(philo);
@@ -159,7 +162,6 @@ void *monitor_routine(void *arg)
             data->stop = 1;
             return NULL;
         }
-		// usleep(500);
 	}
 	return NULL;
 }
@@ -174,7 +176,9 @@ void	create_threads(t_philo *philos, t_data *data)
 	i = 0;
 	while (i < data->num_philosophers)
 	{
+		pthread_mutex_lock(&data->meal_mutex);
 		philos[i].last_meal_time = get_time();
+		pthread_mutex_unlock(&data->meal_mutex);
 		pthread_create(&philos[i].thread, NULL, philo_routine, &philos[i]);
 		i++;
 	}
@@ -197,6 +201,7 @@ void destroy_mutexes(t_data *data)
 		pthread_mutex_destroy(&data->forks[i++]);
 	pthread_mutex_destroy(&data->print_mutex);
 	pthread_mutex_destroy(&data->meal_mutex);
+	
 	free(data->forks);
 }
 

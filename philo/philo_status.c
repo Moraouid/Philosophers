@@ -6,7 +6,7 @@
 /*   By: sel-abbo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 19:17:07 by sel-abbo          #+#    #+#             */
-/*   Updated: 2025/04/05 00:12:45 by sel-abbo         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:22:32 by sel-abbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,30 +19,45 @@ void print_status(t_philo *philo, char *msg)
     pthread_mutex_unlock(&philo->data->print_mutex);
 }
 
-void take_forks(t_philo *philo)
+int take_forks(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(philo->right_fork);
 		if(check_die(philo))
-			return ;
+        {
+            pthread_mutex_unlock(philo->right_fork);
+            return (0);
+        }
 		print_status(philo, "has taken a fork");
 		pthread_mutex_lock(philo->left_fork);
 		if(check_die(philo))
-			return ;
+        {
+            pthread_mutex_unlock(philo->right_fork);
+            pthread_mutex_unlock(philo->left_fork);
+            return (0);
+        }
 		print_status(philo, "has taken a fork");
 	}
 	else
 	{
 		pthread_mutex_lock(philo->left_fork);
 		if(check_die(philo))
-			return ;
+		{
+            pthread_mutex_unlock(philo->left_fork);
+            return (0);
+        }
 		print_status(philo, "has taken a fork");
 		pthread_mutex_lock(philo->right_fork);
 		if(check_die(philo))
-			return ;
+		{
+            pthread_mutex_unlock(philo->right_fork);
+            pthread_mutex_unlock(philo->left_fork);
+            return (0);
+        }
 		print_status(philo, "has taken a fork");
 	}
+	return 1;
 }
 
 void put_forks(t_philo *philo)

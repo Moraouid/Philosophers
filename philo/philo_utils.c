@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-abbo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sel-abbo <sel-abbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 17:44:26 by sel-abbo          #+#    #+#             */
-/*   Updated: 2025/04/08 18:26:56 by sel-abbo         ###   ########.fr       */
+/*   Updated: 2025/04/20 17:44:05 by sel-abbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	for_philo_odd(t_philo *philo)
 	return (1);
 }
 
-long	get_time(void)
+long	my_get_time(void)
 {
 	struct timeval	time;
 	long			current_time;
@@ -65,7 +65,7 @@ long	get_time(void)
 void	init_data(t_data *data, char **av)
 {
 	data->num_philosophers = ft_atoi(av[1]);
-	data->time_to_die = ft_atoi(av[2]);
+	data->time_die = ft_atoi(av[2]);
 	data->time_to_eat = ft_atoi(av[3]);
 	data->time_to_sleep = ft_atoi(av[4]);
 	if (av[5])
@@ -83,7 +83,7 @@ void	init_data(t_data *data, char **av)
 	}
 }
 
-void	mutex_initialization(t_data *data, t_philo *philos)
+void	initialization(t_data *data, t_philo *philos)
 {
 	int	i;
 
@@ -104,7 +104,7 @@ void	mutex_initialization(t_data *data, t_philo *philos)
 		philos[i].right_fork = &data->forks[(i + 1) % data->num_philosophers];
 		philos[i].data = data;
 		philos[i].meals_eaten = 0;
-		philos[i].last_meal_time = 0;
+		philos[i].last_meal = 0;
 		i++;
 	}
 	pthread_mutex_init(&data->print_mutex, NULL);

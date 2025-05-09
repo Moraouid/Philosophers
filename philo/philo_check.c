@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-abbo <sel-abbo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-abbo <sel-abbo@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 23:16:24 by sel-abbo          #+#    #+#             */
-/*   Updated: 2025/04/19 18:19:48 by sel-abbo         ###   ########.fr       */
+/*   Updated: 2025/04/22 15:05:43 by sel-abbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ int	all_philos_full(t_data *data)
 	}
 	pthread_mutex_unlock(&data->meal_mutex);
 	if (full_count == data->num_philosophers)
+	{
+		usleep(100);
 		return (1);
+	}
 	return (0);
 }

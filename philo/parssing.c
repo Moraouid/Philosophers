@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parssing.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-abbo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sel-abbo <sel-abbo@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 21:34:44 by sel-abbo          #+#    #+#             */
-/*   Updated: 2025/04/08 18:12:42 by sel-abbo         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:11:01 by sel-abbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@ int	is_valid_number(char *str)
 		return (0);
 	while (str[i])
 	{
-		if (str[i] < '0' || str[i] > '9')
+		if (!(str[i] >= '0' && str[i] <= '9'))
 			return (0);
-		num = num * 10 + (str[i] - '0');
+		if (str[i] >= '0' && str[i] <= '9')
+			num = num * 10 + (str[i] - '0');
 		if (num > INT_MAX)
 			return (0);
 		i++;
@@ -39,17 +40,19 @@ int	is_valid_number(char *str)
 
 int	ft_atoi(const char *str)
 {
-	int		i;
-	long	num;
+	int	i;
+	int	num;
 
 	num = 0;
 	i = 0;
+	if (str[i] == '+')
+		i++;
 	while (str[i])
 	{
 		num = num * 10 + (str[i] - '0');
 		i++;
 	}
-	return ((int)num);
+	return (num);
 }
 
 int	is_valid(int ac, char **av)
@@ -61,7 +64,7 @@ int	is_valid(int ac, char **av)
 	i = 1;
 	while (i < ac)
 	{
-		if (!is_valid_number(av[i]))
+		if (is_valid_number(av[i]) == 0)
 			return (0);
 		if (ft_atoi(av[i]) <= 0)
 			return (0);

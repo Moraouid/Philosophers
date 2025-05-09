@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_utils.c                                      :+:      :+:    :+:   */
+/*   philo_utils_1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-abbo <sel-abbo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-abbo <sel-abbo@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 17:44:26 by sel-abbo          #+#    #+#             */
-/*   Updated: 2025/04/21 13:48:27 by sel-abbo         ###   ########.fr       */
+/*   Updated: 2025/05/01 16:06:37 by sel-abbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,22 +68,20 @@ void	init_data(t_data *data, char **av)
 	data->time_die = ft_atoi(av[2]);
 	data->time_to_eat = ft_atoi(av[3]);
 	data->time_to_sleep = ft_atoi(av[4]);
+	data->max_meals = -1;
 	if (av[5])
 		data->max_meals = ft_atoi(av[5]);
-	else
-		data->max_meals = -1;
 	data->stop = 0;
 	data->time_to_think = 0;
 	if (data->num_philosophers % 2 == 1)
 	{
-		if (data->time_to_eat > data->time_to_sleep)
+		if (data->time_to_eat > data->time_to_sleep
+			|| data->time_to_eat == data->time_to_sleep)
 			data->time_to_think = data->time_to_eat;
-		else if (data->time_to_sleep == data->time_to_eat)
-			data->time_to_think = data->time_to_eat / 2;
 	}
 }
 
-void	initialization(t_data *data, t_philo *philos)
+int	initialization(t_data *data, t_philo *philos)
 {
 	int	i;
 
@@ -91,22 +89,18 @@ void	initialization(t_data *data, t_philo *philos)
 	if (!data->forks)
 	{
 		free(philos);
-		return ;
+		return (0);
 	}
-	i = 0;
-	while (i < data->num_philosophers)
-		pthread_mutex_init(&data->forks[i++], NULL);
+	initialization_philos(philos, data);
 	i = 0;
 	while (i < data->num_philosophers)
 	{
-		philos[i].id = i + 1;
-		philos[i].left_fork = &data->forks[i];
-		philos[i].right_fork = &data->forks[(i + 1) % data->num_philosophers];
-		philos[i].data = data;
-		philos[i].meals_eaten = 0;
-		philos[i].last_meal = 0;
-		i++;
+		if (pthread_mutex_init(&data->forks[i++], NULL))
+			return (destroy_to_field(data, i, 1), 0);
 	}
-	pthread_mutex_init(&data->print_mutex, NULL);
-	pthread_mutex_init(&data->meal_mutex, NULL);
+	if (pthread_mutex_init(&data->print_mutex, NULL))
+		return (destroy_to_field(data, data->num_philosophers, 1), 0);
+	if (pthread_mutex_init(&data->meal_mutex, NULL))
+		return (destroy_to_field(data, data->num_philosophers, 2), 0);
+	return (1);
 }

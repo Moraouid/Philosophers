@@ -6,7 +6,7 @@
 /*   By: sel-abbo <sel-abbo@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 23:11:46 by sel-abbo          #+#    #+#             */
-/*   Updated: 2025/05/09 22:27:43 by sel-abbo         ###   ########.fr       */
+/*   Updated: 2025/05/27 02:59:06 by sel-abbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	philo_life_loop(t_philo *philo)
 {
 	while (1)
 	{
-		if (check_die(philo))
+		if (check_death(philo))
 			break ;
 		if (take_forks(philo) == 1)
 		{
@@ -63,7 +63,7 @@ void	*monitor_routine(void *arg)
 				printf("%ld %d %s\n", my_get_time() - data->start_time,
 					data->philos->id, "died");
 				pthread_mutex_unlock(&data->print_mutex);
-				return (pthread_mutex_unlock(&data->meal_mutex), (NULL));
+				return (pthread_mutex_unlock(&data->meal_mutex), NULL);
 			}
 			pthread_mutex_unlock(&data->meal_mutex);
 		}
@@ -79,12 +79,11 @@ int	create_threads(t_philo *philos, t_data *data)
 	pthread_t	monitor;
 
 	data->start_time = my_get_time();
-	data->philos = philos;
 	i = 0;
 	while (i < data->num_philosophers)
 	{
 		philos[i].last_meal = my_get_time();
-		if (pthread_create(&philos[i].thread, NULL, philo_routine, &philos[i]))
+		if (pthread_create(&(philos + i)->thread, NULL, philo_routine, &philos[i]))
 			return (destroy_mutexes(data), free(philos), 0);
 		i++;
 	}

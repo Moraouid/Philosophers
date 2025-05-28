@@ -6,7 +6,7 @@
 /*   By: sel-abbo <sel-abbo@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 21:34:54 by sel-abbo          #+#    #+#             */
-/*   Updated: 2025/04/29 18:15:08 by sel-abbo         ###   ########.fr       */
+/*   Updated: 2025/05/24 16:51:52 by sel-abbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(int ac, char **av)
 
 	if (is_valid(ac, av) == 0)
 	{
-		printf("Error: Invalid argument\n");
+		printf("Error\n");
 		return (1);
 	}
 	init_data(&data, av);

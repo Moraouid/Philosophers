@@ -6,7 +6,7 @@
 /*   By: sel-abbo <sel-abbo@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 18:34:45 by sel-abbo          #+#    #+#             */
-/*   Updated: 2025/05/01 15:47:19 by sel-abbo         ###   ########.fr       */
+/*   Updated: 2025/05/23 23:47:26 by sel-abbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,25 +47,24 @@ typedef struct s_philo
 	pthread_t			thread;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
-	pthread_mutex_t		meal_mutex;
 }						t_philo;
 
 /* functions */
 int						ft_atoi(const char *str);
 int						is_valid(int ac, char **av);
 int						take_forks(t_philo *philo);
-int						check_die(t_philo *philo);
+int						check_death(t_philo *philo);
 int						for_philo_even(t_philo *philo);
 int						for_philo_odd(t_philo *philo);
 int						all_philos_full(t_data *data);
-int						check_die(t_philo *philo);
+int						check_death(t_philo *philo);
 int						all_philos_full(t_data *data);
 int						initialization(t_data *data, t_philo *philos);
 int						create_threads(t_philo *philos, t_data *data);
 void					destroy_mutexes(t_data *data);
 void					print_status(t_philo *philo, char *msg);
 void					initialization_philos(t_philo *philos, t_data *data);
-void					destroy_to_field(t_data *data, int index, int flag);
+void					failling_destroy(t_data *data, int index, int flag);
 void					put_forks(t_philo *philo);
 void					eat(t_philo *philo);
 void					sleep_and_think(t_philo *philo);

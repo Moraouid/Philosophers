@@ -6,13 +6,13 @@
 /*   By: sel-abbo <sel-abbo@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 23:16:24 by sel-abbo          #+#    #+#             */
-/*   Updated: 2025/04/22 15:05:43 by sel-abbo         ###   ########.fr       */
+/*   Updated: 2025/05/28 01:24:03 by sel-abbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	check_die(t_philo *philo)
+int	check_death(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->meal_mutex);
 	if (philo->data->stop)

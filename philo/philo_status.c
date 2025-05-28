@@ -6,7 +6,7 @@
 /*   By: sel-abbo <sel-abbo@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 19:17:07 by sel-abbo          #+#    #+#             */
-/*   Updated: 2025/05/02 20:13:16 by sel-abbo         ###   ########.fr       */
+/*   Updated: 2025/05/28 01:24:05 by sel-abbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ void	put_forks(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-	if (check_die(philo))
+	if (check_death(philo))
 		return ;
-	// pthread_mutex_lock(&philo->data->meal_mutex);
+	pthread_mutex_lock(&philo->data->meal_mutex);
 	philo->last_meal = my_get_time();
 	philo->meals_eaten++;
-	// pthread_mutex_unlock(&philo->data->meal_mutex);
-	if (check_die(philo))
+	pthread_mutex_unlock(&philo->data->meal_mutex);
+	if (check_death(philo))
 		return ;
 	print_status(philo, "is eating");
 	usleep(philo->data->time_to_eat * 1000);
@@ -58,13 +58,11 @@ void	eat(t_philo *philo)
 
 void	sleep_and_think(t_philo *philo)
 {
-	if (check_die(philo))
+	if (check_death(philo))
 		return ;
 	print_status(philo, "is sleeping");
 	usleep(philo->data->time_to_sleep * 1000);
-	if (check_die(philo))
-		return ;
-	if (check_die(philo))
+	if (check_death(philo))
 		return ;
 	print_status(philo, "is thinking");
 	usleep(philo->data->time_to_think * 1000);
